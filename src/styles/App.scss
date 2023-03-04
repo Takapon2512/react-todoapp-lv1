@@ -1,0 +1,257 @@
+html, body {
+    margin: 0;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 62.5%
+}
+
+ul, p {
+    margin: 0;
+    padding: 0;
+}
+
+li {
+    list-style-type: none;
+}
+
+.fs-s {
+    font-size: 1.5rem;
+}
+
+.fs-m {
+    font-size: 1.6rem;
+}
+
+.fs-l {
+    font-size: 2.4rem;
+}
+
+header {
+    @extend .fs-l;
+    padding: 16px 32px;
+    background-color: #0A1545;
+    color: #ffffff;
+    font-weight: 500;
+    letter-spacing: 0.05rem;
+}
+
+.header-center {
+    text-align: center;
+}
+
+.contents {
+    display: flex;
+    justify-content: space-between;
+    background-color: #f6f6f6;
+}
+
+.menu-area {
+    background-color: #0d0d66;
+    min-width: 200px;
+    width: 24%;
+    max-width: 300px;
+    min-height: 100vh;
+    color: rgba(255, 255, 255, 0.9);
+
+    & h2 {
+        @extend .fs-m;
+        padding: 12px 16px;
+        margin: 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+    }
+}
+
+.menu-list {
+    padding: 16px 0 0;
+
+    & li {
+        @extend .fs-s;
+        margin: 0 4px 12px;
+        padding: 4px 12px;
+        border-radius: 8px;
+        transition: all 0.15s;
+    }
+
+    & li:hover {
+        cursor: pointer;
+        background-color: #4946ff;
+    }
+}
+
+.main-area {
+    width: 76%;
+    padding: 0 32px;
+}
+
+.input-area {
+    display: flex;
+    align-items: center;
+    padding: 24px 0;
+
+    & input {
+        @extend .fs-s;
+        padding: 12px 16px;
+        margin-right: 12px;
+        outline: 0;
+        border-radius: 24px;
+        border: 1px solid #f6f6f6;
+    }
+
+    & button {
+        width: 50px;
+        height: 36px;
+        font-size: 1.2rem;
+        border-radius: 4px;
+        border: 1px solid #3b3b3b;
+        background-color: #f6f6f6;
+    }
+
+    & button:hover {
+        cursor: pointer;
+        background-color: #4946ff;
+        border: none;
+        color: #ffffff;
+    }
+}
+
+.notstajob-area {
+    margin-bottom: 48px;
+
+    & h2 {
+        color: #1dbd60;
+    }
+}
+
+.job-area {
+    margin-bottom: 48px;
+
+    & h2 {
+        color: #4946ff;
+    }
+}
+
+.endjob-area {
+    margin-bottom: 48px;
+
+    & h2 {
+        color: #fc3838;
+    }
+}
+
+.notstajob-area, .job-area, .endjob-area {
+    & h2 {
+        @extend .fs-m;
+        border-bottom: 1px solid #3b3b3b;
+        padding-bottom: 12px;
+    }
+}
+
+.job-list {
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 12px;
+    column-gap: 12px;
+
+    & .job {
+        min-width: 200px;
+        max-width: 20%;
+        border-radius: 8px;
+        padding: 12px;
+    }
+
+    & .job:hover {
+        cursor: pointer;
+    }
+
+    & .job p, .job input {
+        @extend .fs-s;
+        background-color: #f6f6f6;
+        padding: 4px;
+        border-radius: 4px;
+    }
+
+    & .job button {
+        width: 56px;
+        height: 32px;
+        border-radius: 4px;
+        border: 1px solid rgba(255, 255, 255, 0.9);
+        background-color: transparent;
+        color: rgba(255, 255, 255, 0.9);
+        margin: 12px 4px 0 0;
+    }
+
+    & .job button:hover {
+        cursor: pointer;
+        background-color: #0d0d66;
+        transition: all 0.2s;
+    }
+
+    & .job button:last-child:hover {
+        background-color: #ff1313;
+    }
+
+    .job input {
+        line-height: 1.4;
+        border: none;
+        outline: none;
+    }
+}
+
+.notstajob-area {
+    & .job {
+        background-color: rgba(29, 189, 96, 0.9);
+        filter: drop-shadow(2px 2px 2px rgba(12, 90, 45, 0.9));
+    }
+}
+
+.job-area {
+    & .job {
+        background-color: rgba(73, 70, 255, 0.9);
+        filter: drop-shadow(2px 2px 2px rgba(15, 14, 53, 0.9));
+    }
+}
+
+.endjob-area {
+    & .job {
+        background-color: #fc3838;
+        filter: drop-shadow(2px 2px 2px rgba(59, 14, 14, 0.9));
+    }
+}
+
+.footer {
+    padding: 16px 0;
+    background-color: #0A1545;
+
+    & p {
+        @extend .fs-s;
+        color: #ffffff;
+        margin: 0;
+        text-align: center;
+    }
+}
+
+.edit-solid.icon {
+    color: #919191;
+    position: absolute;
+    margin-left: 180px;
+    margin-top: -18px;
+    width: 14px;
+    height: 2px;
+    border-radius: 1px;
+    border: solid 1px currentColor;
+    background-color: currentColor;
+    transform: rotate(-45deg);
+
+    &::before {
+        content: '';
+        position: absolute;
+        left: -12px;
+        top: -1px;
+        width: 0px;
+        height: 0px;
+        border-left: solid 5px transparent;
+        border-right: solid 5px currentColor;
+        border-top: solid 2px transparent;
+        border-bottom: solid 2px transparent;
+    }
+}
+  
