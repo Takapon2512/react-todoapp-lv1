@@ -211,7 +211,6 @@ export const App = () => {
                                             <>
                                             <input 
                                             type="text"
-                                            placeholder={todo.title}
                                             value={editingTodoText}
                                             onChange={handleEditInputChange}
                                             />
