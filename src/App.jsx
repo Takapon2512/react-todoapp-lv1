@@ -7,7 +7,7 @@ export const App = () => {
     const [progressTodos, setProgressTodos] = useState([])
     const [endTodos, setEndTodos] = useState([])
 
-    //footerに使う年号
+    //footerに使う西暦
     const now = new Date()
     const year = now.getFullYear()
 
