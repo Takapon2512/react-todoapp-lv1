@@ -37,6 +37,7 @@ export const App = () => {
             newEditingTodos[index].isEditing = false
 
             setNotStartedTodos(newEditingTodos)
+            setEditingTodoText('')
         } 
     }
 
