@@ -1,4 +1,10 @@
 import React, { useState } from "react";
+import { InputTodo } from "./components/InputTodo";
+import { NotStartedTodos } from "./components/NotStartedTodos";
+import { ProgressTodos } from "./components/ProgressTodos";
+import { EndTodos } from "./components/EndTodos";
+import { Header } from "./components/Header";
+import { Footer } from "./components/Footer";
 
 export const App = () => {
     const [todoText, setTodoText] = useState('')
@@ -6,10 +12,6 @@ export const App = () => {
     const [notstartedTodos, setNotStartedTodos] = useState([])
     const [progressTodos, setProgressTodos] = useState([])
     const [endTodos, setEndTodos] = useState([])
-
-    //footerに使う西暦
-    const now = new Date()
-    const year = now.getFullYear()
 
     //インプットボックスにテキストを入れたときに発動
     const onChangeTodoText = (event) => {
@@ -75,9 +77,7 @@ export const App = () => {
         newNotStartedJobTodos.splice(index, 1)
 
         //「未着手のタスク」のidに欠番が生じるため、idをふり直す
-        for(let i = 0; i < newNotStartedJobTodos.length; i++) {
-            newNotStartedJobTodos[i].id = i + 1
-        }
+        idRewrite(newNotStartedJobTodos)
 
         setProgressTodos(newProgressTodos)
         setNotStartedTodos(newNotStartedJobTodos)
@@ -90,9 +90,7 @@ export const App = () => {
         //対象のTodoを配列から消去
         newNotStartedTodos.splice(index, 1)
         //消去したことにより、欠番が生じるため、idをふり直す
-        for (let i = 0; i < newNotStartedTodos.length; i++) {
-            newNotStartedTodos[i].id = i + 1
-        }
+        idRewrite(newNotStartedTodos)
         setNotStartedTodos(newNotStartedTodos)
     }
 
@@ -102,9 +100,7 @@ export const App = () => {
         //対象のtodoを配列から消去
         newProgressTodos.splice(index, 1)
         //消去したことにより、欠番が生じるため、idをふり直す
-        for (let i = 0; i < newProgressTodos.length; i++) {
-            newProgressTodos[i].id = i + 1
-        }
+        idRewrite(newProgressTodos)
         setProgressTodos(newProgressTodos)
     }
 
@@ -114,9 +110,7 @@ export const App = () => {
         //対象のtodoを配列から消去
         newEndTodos.splice(index, 1)
         //消去したことにより、欠番が生じるため、idをふり直す
-        for (let i = 0; i < newEndTodos.length; i++) {
-            newEndTodos[i].id = i + 1
-        }
+        idRewrite(newEndTodos)
         setEndTodos(newEndTodos)
     }
 
@@ -146,12 +140,8 @@ export const App = () => {
         setEndTodos(newEndTodos)
 
         //前項の処理により「完了したタスク」と「現在進行中のタスク」でidに欠番および重複が生じるため、idをふり直す
-        for (let i = 0; i < newEndTodos.length; i++) {
-            newEndTodos[i].id = i + 1
-        }
-        for (let i = 0; i < newProgressTodos.length; i++) {
-            newProgressTodos[i].id = i + 1
-        }
+        idRewrite(newEndTodos)
+        idRewrite(newProgressTodos)
     }
 
     const onClickNotstartedBack = (index) => {
@@ -161,26 +151,24 @@ export const App = () => {
         //対象のtodoを消去し、「未着手のタスク」に追加する
         newProgressTodos.splice(index, 1)
         //前項の処理により「現在進行中のタスク」と「未着手のタスク」でidに欠番及び重複が生じるため、idをふり直す
-        for (let i = 0; i < newProgressTodos.length; i++) {
-            newProgressTodos[i].id = i + 1
-        }
-
-        for (let i = 0; i < newNotStartedTodos.length; i++) {
-            newNotStartedTodos[i].id = i + 1
-        }
+        idRewrite(newProgressTodos)
+        idRewrite(newNotStartedTodos)
 
         setProgressTodos(newProgressTodos)
         setNotStartedTodos(newNotStartedTodos)
 
     }
 
+    //idのふり直し処理を関数化
+    const idRewrite = (Todos) => {
+        for (let i = 0; i < Todos.length; i++) {
+            Todos[i].id = i + 1
+        }   
+    }
+
     return (
         <>
-        <header>
-            <div className="header-center">
-                ToDoアプリ
-            </div>
-        </header>
+        <Header />
         <section className="contents">
             <div className="menu-area">
                 <h2>プロジェクト一覧</h2>
@@ -191,84 +179,35 @@ export const App = () => {
                 </ul>
             </div>
             <div className="main-area">
-                <div className="input-area">
-                    <input 
-                    type="text" 
-                    placeholder="ToDoを入力してください"
-                    value={todoText}
-                    onChange={onChangeTodoText}
-                    onKeyDown={onPressEnter}
-                    />
-                    <button onClick={onClickAdd}>追加</button>
-                </div>
-                <div className="notstajob-area">
-                    <h2>未着手のタスク</h2>
-                    <ul className="job-list">
-                        {
-                            notstartedTodos.map((todo, index) => {
-                                return (
-                                    <li key={todo.id} className="job">
-                                        {todo.isEditing ? (
-                                            <>
-                                            <input 
-                                            type="text"
-                                            value={editingTodoText}
-                                            onChange={handleEditInputChange}
-                                            />
-                                            <button onClick={() => onEditing(index)}>編集</button>
-                                            </>
-                                        ) : (
-                                            <>
-                                            <p onClick={() => onEditingMode(index)}>{todo.title}</p>
-                                            <div className="edit-solid icon"></div>
-                                            <button onClick={() => onClickJob(index)}>着手</button>
-                                            <button onClick={() => onClickDeleteNotStarted(index)}>削除</button>
-                                            </>
-                                        )}
-                                    </li>
-                                )
-                            })
-                        }
-                    </ul>
-                </div>
-                <div className="job-area">
-                    <h2>現在進行中のタスク</h2>
-                    <ul className="job-list">
-                        {
-                            progressTodos.map((todo, index) => {
-                                return (
-                                    <li key={todo.id} className="job">
-                                        <p>{todo.title}</p>
-                                        <button onClick={() => onClickNotstartedBack(index)}>戻す</button>
-                                        <button onClick={() => onClickEnd(index)}>完了</button>
-                                        <button onClick={() => onClickDeleteProgress(index)}>削除</button>
-                                    </li>
-                                )
-                            })
-                        }
-                    </ul>
-                </div>
-                <div className="endjob-area">
-                    <h2>完了したタスク</h2>
-                    <ul className="job-list">
-                        {
-                            endTodos.map((todo, index) => {
-                                return (
-                                    <li key={todo.id} className="job">
-                                        <p>{todo.title}</p>
-                                        <button onClick={() => onClickBack(index)}>戻す</button>
-                                        <button onClick={() => onClickDeleteEnd(index)}>削除</button>
-                                    </li>
-                                )
-                            })
-                        }
-                    </ul>
-                </div>
+                <InputTodo 
+                todoText={todoText} 
+                onChange={onChangeTodoText}
+                onKeyDown={onPressEnter}
+                onClick={onClickAdd}
+                />
+                <NotStartedTodos 
+                todos={notstartedTodos}
+                editingTodoText={editingTodoText}
+                onChange={handleEditInputChange}
+                onClickEditing={onEditing}
+                onEditingMode={onEditingMode}
+                onClickJob={onClickJob}
+                onClickDeleteNotStarted={onClickDeleteNotStarted}
+                />
+                <ProgressTodos 
+                todos={progressTodos}
+                onClickNotstartedBack={onClickNotstartedBack}
+                onClickEnd={onClickEnd}
+                onClickDeleteProgress={onClickDeleteProgress}
+                />
+                <EndTodos 
+                todos={endTodos}
+                onClickBack={onClickBack}
+                onClickDeleteEnd={onClickDeleteEnd}
+                />
             </div>
         </section>
-        <footer className="footer">
-            <p>&copy; {year} ToDoアプリ</p>
-        </footer>
+        <Footer />
         </>
     )
 }
