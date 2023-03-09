@@ -9,10 +9,14 @@ import { Footer } from "./components/Footer";
 export const App = () => {
     const [todoText, setTodoText] = useState('')
     const [editingTodoText, setEditingTodoText] = useState('')
-    const [notstartedTodos, setNotStartedTodos] = useState([]);
+    // const [notstartedTodos, setNotStartedTodos] = useState([])
      // 細かいところですがnot started todos で区切れるとおもうので変数名はnotStartedTodosのように した方がGoodかもです！！
+
+    const [notStartedTodos, setNotStartedTodos] = useState([])
+     //こちら修正しておきました。大文字にすることを忘れておりました...（by たかぽん）
     const [progressTodos, setProgressTodos] = useState([])
     const [endTodos, setEndTodos] = useState([])
+    const [isEmptyInput, setIsEmptyInput] = useState(false)
 
     //インプットボックスにテキストを入れたときに発動
     const onChangeTodoText = (event) => {
@@ -23,9 +27,12 @@ export const App = () => {
 
     //Enterを押下することで、追加ボタンを押したときと同じ処理を行う
     const onPressEnter = (event) => {
-        if (event.key === 'Enter') {
+        if (event.keyCode === 13) {
             onClickAdd()
         }
+        //↓こちらですが、私の方で確認したところ、異常が見当たりませんでした。
+        //しかし、後日Macで確認してみたところ、その事象を確認できました。
+        //とりあえず、解決策2の方を利用させていただきます。(by たかぽん)
 
         // Enterを押したときinputの中が空にならなかったのでよくみてみると
         // 文字入力の確定時に1回Enterを押すとそのまま未着手のタスクに追加
@@ -71,7 +78,7 @@ export const App = () => {
     //その後、編集モードを解除する
     const onEditing = (index) => {
         if (editingTodoText !== '') {
-            const newEditingTodos = [...notstartedTodos]
+            const newEditingTodos = [...notStartedTodos]
             newEditingTodos[index].title = editingTodoText
             newEditingTodos[index].isEditing = false
 
@@ -89,31 +96,38 @@ export const App = () => {
         // もし入力欄が空の場合、ユーザーに入力欄がからであることを通知し
         // それ以降の処理が走らないような記述をしてみてください！
         if (todoText !== '') {
-            const newTodos = [...notstartedTodos, {
-                id: notstartedTodos.length + 1,
+            const newTodos = [...notStartedTodos, {
+                id: notStartedTodos.length + 1,
                 title: todoText,
                 isEditing: false
             }]
+            setIsEmptyInput(false)
             setNotStartedTodos(newTodos)
 
             //追加した後はインプットボックスのテキストを削除
             setTodoText('')
+        } else {
+            //テキストが空の場合の処理を追記しました。
+            //また、InputTodoの方には文字を表示するHTMLも書きました。（by たかぽん）
+            setIsEmptyInput(true)
         }
     }
 
     //Todoタイトルをクリックしたときに編集モードに移行
     const onEditingMode = (index) => {
-        const newEditingTodos = [...notstartedTodos]
+        const newEditingTodos = [...notStartedTodos]
         newEditingTodos[index].isEditing = true
+
         setNotStartedTodos(newEditingTodos)
+        
     }
 
     //着手ボタンをクリックしたときに発動
     const onClickJob = (index) => {
-        const newNotStartedJobTodos = [...notstartedTodos]
+        const newNotStartedJobTodos = [...notStartedTodos]
         const newProgressTodos = [...progressTodos, {
             id: progressTodos.length + 1,
-            title: notstartedTodos[index].title
+            title: notStartedTodos[index].title
         }]
 
         newNotStartedJobTodos.splice(index, 1)
@@ -129,7 +143,7 @@ export const App = () => {
 
     // 削除ボタンをクリックしたときに発動
     const onClickDeleteNotStarted = (index) => {
-        const newNotStartedTodos = [...notstartedTodos]
+        const newNotStartedTodos = [...notStartedTodos]
 
         //対象のTodoを配列から消去
         newNotStartedTodos.splice(index, 1)
@@ -213,7 +227,7 @@ export const App = () => {
 
     const onClickNotstartedBack = (index) => {
         const newProgressTodos = [...progressTodos]
-        const newNotStartedTodos = [...notstartedTodos, progressTodos[index]]
+        const newNotStartedTodos = [...notStartedTodos, progressTodos[index]]
 
         //対象のtodoを消去し、「未着手のタスク」に追加する
         newProgressTodos.splice(index, 1)
@@ -257,9 +271,10 @@ export const App = () => {
                 onChange={onChangeTodoText}
                 onKeyDown={onPressEnter}
                 onClick={onClickAdd}
+                isEmptyInput={isEmptyInput}
                 />
                 <NotStartedTodos 
-                todos={notstartedTodos}
+                todos={notStartedTodos}
                 editingTodoText={editingTodoText}
                 onChange={handleEditInputChange}
                 onClickEditing={onEditing}

@@ -1,11 +1,7 @@
 import React from "react";
 
-export const EndTodos = (props) => {
-    const {
-        todos,
-        onClickBack,
-        onClickDeleteEnd 
-    } = props
+export const EndTodos = ({ todos, onClickBack, onClickDeleteEnd }) => {
+    
     return (
         <>
         <div className="endjob-area">

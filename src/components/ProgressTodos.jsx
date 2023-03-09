@@ -1,12 +1,7 @@
 import React from "react";
 
-export const ProgressTodos = (props) => {
-    const { 
-        todos, 
-        onClickNotstartedBack,
-        onClickEnd,
-        onClickDeleteProgress 
-    } = props
+export const ProgressTodos = ({ todos, onClickNotstartedBack, onClickEnd, onClickDeleteProgress }) => {
+    
     return (
         <>
         <div className="job-area">

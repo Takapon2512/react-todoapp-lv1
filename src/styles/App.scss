@@ -83,12 +83,11 @@ header {
 }
 
 .input-area {
-    display: flex;
-    align-items: center;
     padding: 24px 0;
 
     & input {
         @extend .fs-s;
+        width: 200px;
         padding: 12px 16px;
         margin-right: 12px;
         outline: 0;
@@ -111,6 +110,11 @@ header {
         border: none;
         color: #ffffff;
     }
+}
+
+.input-area-inner {
+    display: flex;
+    align-items: center;
 }
 
 .notstajob-area {

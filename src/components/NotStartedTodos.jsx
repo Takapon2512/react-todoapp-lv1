@@ -1,14 +1,7 @@
 import React from "react";
 
-export const NotStartedTodos = (props) => {
-    const { 
-        todos, 
-        editingTodoText, 
-        onChange, 
-        onClickEditing, 
-        onEditingMode,
-        onClickJob,
-        onClickDeleteNotStarted } = props
+export const NotStartedTodos = ({ todos, editingTodoText, onChange, onClickEditing, onEditingMode, onClickJob, onClickDeleteNotStarted }) => {
+    
     return (
         <>
         <div className="notstajob-area">
